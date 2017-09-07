@@ -68,6 +68,20 @@ app.get( '/auth/callback', passport.authenticate('auth0', {
     failureRedirect: 'http://localhost:3000/#/'
 }) );
 
+// Gets user if found
+app.get( '/auth/me', ( req, res ) => {
+    if( !req.user )
+        return res.status(404).send('User not found')
+    else
+        return res.status(200).send( req.user )
+} );
+
+// Log out
+app.get( '/auth/logout', ( req, res ) => {
+    req.logOut() //Passport gives us this to terminate a login session
+    return res.redirect(302, 'http://localhost:3000/#/') //res.redirect comes from Express to redirect the user to the given url
+})
+
 
 
 let port = 3005;
